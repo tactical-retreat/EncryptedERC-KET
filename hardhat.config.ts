@@ -9,6 +9,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const RPC_URL = process.env.RPC_URL || "https://api.avax.network/ext/bc/C/rpc";
+const PRIVATE_KEY = process.env.PRIVATE_KEY || "0000000000000000000000000000000000000000000000000000000000000000";
 
 const config: HardhatUserConfig = {
 	solidity: {
@@ -27,6 +28,16 @@ const config: HardhatUserConfig = {
 				blockNumber: 59121339,
 				enabled: !!process.env.FORKING,
 			},
+		},
+		avaxTest: {
+			url: "https://api.avax-test.network/ext/bc/C/rpc",
+			accounts: [PRIVATE_KEY],
+			chainId: 43113,
+		},
+		avaxMain: {
+			url: "https://api.avax.network/ext/bc/C/rpc",
+			accounts: [PRIVATE_KEY],
+			chainId: 43114,
 		},
 	},
 	gasReporter: {
