@@ -5,6 +5,7 @@
 		"@biomejs/biome": "^1.9.4",
 		"@nomicfoundation/hardhat-chai-matchers": "^2.0.8",
 		"@nomicfoundation/hardhat-ethers": "^3.0.8",
+		"@nomicfoundation/hardhat-verify": "^2.0.13",
 		"@openzeppelin/contracts": "^5.1.0",
 		"@typechain/hardhat": "^9.1.0",
 		"@types/jest": "^29.5.14",

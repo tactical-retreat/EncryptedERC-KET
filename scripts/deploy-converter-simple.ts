@@ -48,6 +48,35 @@ const main = async () => {
 		registrar: registrar.target,
 		encryptedERC: encryptedERC_.target,
 	});
+
+	console.log("\nWaiting for block confirmations before verification...");
+	await new Promise(resolve => setTimeout(resolve, 30000)); // 30 second delay
+
+	console.log("\nStarting contract verification...");
+	try {
+		await run("verify:verify", {
+			address: await registrar.getAddress(),
+			constructorArguments: [registrationVerifier],
+		});
+		console.log("Registrar contract verified!");
+
+		await run("verify:verify", {
+			address: encryptedERC_.target,
+			constructorArguments: [{
+				registrar: await registrar.getAddress(),
+				isConverter: true,
+				name: "",
+				symbol: "",
+				mintVerifier,
+				withdrawVerifier,
+				transferVerifier,
+				decimals: 18,
+			}],
+		});
+		console.log("EncryptedERC contract verified!");
+	} catch (error) {
+		console.error("Verification failed:", error);
+	}
 };
 
 main().catch((error) => {

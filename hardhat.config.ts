@@ -4,12 +4,14 @@ import "solidity-coverage";
 import "hardhat-gas-reporter";
 import "@nomicfoundation/hardhat-chai-matchers";
 import "@nomicfoundation/hardhat-ethers";
+import "@nomicfoundation/hardhat-verify";
 
 import dotenv from "dotenv";
 dotenv.config();
 
 const RPC_URL = process.env.RPC_URL || "https://api.avax.network/ext/bc/C/rpc";
 const PRIVATE_KEY = process.env.PRIVATE_KEY || "0000000000000000000000000000000000000000000000000000000000000000";
+const SNOWTRACE_API_KEY = process.env.SNOWTRACE_API_KEY || "";
 
 const config: HardhatUserConfig = {
 	solidity: {
@@ -49,6 +51,30 @@ const config: HardhatUserConfig = {
 		L1: "avalanche",
 		showMethodSig: true,
 	},
+	etherscan: {
+		apiKey: {
+			avalanche: SNOWTRACE_API_KEY,
+			avalancheFujiTestnet: SNOWTRACE_API_KEY
+		},
+		customChains: [
+			{
+				network: "avalanche",
+				chainId: 43114,
+				urls: {
+					apiURL: "https://api.snowtrace.io/api",
+					browserURL: "https://snowtrace.io/"
+				}
+			},
+			{
+				network: "avalancheFujiTestnet",
+				chainId: 43113,
+				urls: {
+					apiURL: "https://api-testnet.snowtrace.io/api",
+					browserURL: "https://testnet.snowtrace.io/"
+				}
+			}
+		]
+	}
 };
 
 export default config;
