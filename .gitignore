@@ -24,3 +24,6 @@ gas-report.txt
 # zkit
 generated-types/
 zkit/
+
+# idea
+.idea

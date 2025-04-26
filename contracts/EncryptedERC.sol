@@ -180,10 +180,16 @@ contract EncryptedERC is TokenTracker, EncryptedUserBalances, AuditorManager {
         withdrawVerifier = IWithdrawVerifier(params.withdrawVerifier);
         transferVerifier = ITransferVerifier(params.transferVerifier);
 
-        // if contract is not a converter, then set the name and symbol
-        if (!params.isConverter) {
-            name = params.name;
-            symbol = params.symbol;
+        // TR: converter now only supports one token
+        name = params.name;
+        symbol = params.symbol;
+
+        // TR: converter requires a convertedToken
+        if (params.isConverter) {
+            if (params.convertedToken == address(0)) {
+                revert ZeroAddress();
+            }
+            _addToken(params.convertedToken);
         }
 
         decimals = params.decimals;
@@ -741,9 +747,9 @@ contract EncryptedERC is TokenTracker, EncryptedUserBalances, AuditorManager {
             dust = 0;
         }
 
-        // Register the token if it's new
+        // TR: don't support registering arbitrary tokens, only the wrapped one
         if (tokenIds[tokenAddress] == 0) {
-            _addToken(tokenAddress);
+            revert UnknownToken();
         }
         tokenId = tokenIds[tokenAddress];
 
